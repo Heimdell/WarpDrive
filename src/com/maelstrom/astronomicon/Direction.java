@@ -1,3 +1,4 @@
+
 package com.maelstrom.astronomicon;
 
 public enum Direction {
