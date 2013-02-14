@@ -38,6 +38,8 @@ public class Rotate implements IMovement {
 
     @Override
     public void stepback() {
+        assert nonzero();
+        
         roll = Direction.UNCHANGED;
     }
 

@@ -25,6 +25,8 @@ public class ComposeMove implements IMovement {
 
     @Override
     public void stepback() {
+        assert nonzero();
+        
         IMovement last = list.elementAt(list.size() - 1 - stepped_back);
 
         if (last.nonzero())

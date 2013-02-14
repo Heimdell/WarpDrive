@@ -39,6 +39,8 @@ public class Shift implements IMovement {
 
     @Override
     public void stepback() {
+        assert nonzero();
+        
         current++;
         corrected = buildCurrent();
     }
