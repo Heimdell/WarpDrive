@@ -1,6 +1,12 @@
-package com.maelstrom.astronomicon;
+package com.maelstrom.astronomicon.workers;
 
 import java.util.Iterator;
+
+import com.maelstrom.astronomicon.IBlock;
+import com.maelstrom.astronomicon.IWarpGate;
+import com.maelstrom.astronomicon.Point;
+import com.maelstrom.astronomicon.Ship;
+
 
 public class ProjectToWarp implements IGenerates<Ship> {
     Ship ship = new Ship();
@@ -9,14 +15,11 @@ public class ProjectToWarp implements IGenerates<Ship> {
     
     IWarpGate gate;
 
-    IBlockClassifier prospector;
-
     private boolean falture;
     
-    public ProjectToWarp(IWarpGate gate, IBlockClassifier prospector) {
+    public ProjectToWarp(IWarpGate gate) {
         this.cursor = gate.iterator();
         this.gate = gate;
-        this.prospector = prospector;
     }
     
     public void process(int max_count) {
@@ -25,10 +28,8 @@ public class ProjectToWarp implements IGenerates<Ship> {
             
             IBlock block = gate.getBlock(point);
 
-            Kind kind = prospector.classify(block);
-            
             //     VOID, BREAKABLE, SOLID, FORBIDDEN_SOURCE, FORBIDDEN_DESTINATION
-            switch (kind) {
+            switch (block.getKind()) {
             case BREAKABLE:
             case SOLID:
                 ship.add(point);
@@ -52,11 +53,10 @@ public class ProjectToWarp implements IGenerates<Ship> {
         return cursor.hasNext() && !falture;
     }
     
-    public Ship results() throws ForbiddenSourceBlockException {
+    public Ship results(){
         assert !hasWork();
         
-        if (falture)
-            throw new ForbiddenSourceBlockException();
+        if (falture) return null;
         
         return ship;
     }

@@ -1,4 +1,11 @@
-package com.maelstrom.astronomicon;
+package com.maelstrom.astronomicon.workers;
+
+import com.maelstrom.astronomicon.IBlock;
+import com.maelstrom.astronomicon.IWarpGate;
+import com.maelstrom.astronomicon.Point;
+import com.maelstrom.astronomicon.Ship;
+import com.maelstrom.astronomicon.Ship.MatterIterator;
+
 
 public class TransgressThroughWarp implements IGenerates<Void> {
     
@@ -6,9 +13,7 @@ public class TransgressThroughWarp implements IGenerates<Void> {
     
     Ship.MatterIterator brush;
     
-    IWarpGate gate;
-
-    IBlock vacuum;
+        IBlock vacuum;
 
     IWarpGate income, outcome;
 
@@ -20,7 +25,7 @@ public class TransgressThroughWarp implements IGenerates<Void> {
         this.ship = ship;
         this.income = income;
         this.outcome = outcome;
-        this.vacuum = gate.vacuum();
+        this.vacuum = income.vacuum();
         
         brush = ship.iterator();
     }
@@ -31,10 +36,6 @@ public class TransgressThroughWarp implements IGenerates<Void> {
             Point point = ship.poll();
             
             IBlock block = income.getBlock(point);
-            
-            Direction direction = outcome.getRotation();
-            
-            block.rotate(direction);
             
             outcome.putBlock(block, point);
             income.putBlock(vacuum, point);

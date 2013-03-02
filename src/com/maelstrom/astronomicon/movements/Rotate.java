@@ -1,4 +1,7 @@
-package com.maelstrom.astronomicon;
+package com.maelstrom.astronomicon.movements;
+
+import com.maelstrom.astronomicon.Direction;
+import com.maelstrom.astronomicon.Point;
 
 public class Rotate implements IMovement {
 
@@ -48,9 +51,4 @@ public class Rotate implements IMovement {
         return roll != Direction.UNCHANGED;
     }
 
-    @Override
-    public Direction getSummaryRotation() {
-        // TODO Auto-generated method stub
-        return roll;
-    }
 }

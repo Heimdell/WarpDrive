@@ -30,13 +30,11 @@ public class Ship implements Iterable<Point> {
         
         @Override
         public boolean hasNext() {
-            // TODO Auto-generated method stub
             return iterator.hasNext();
         }
 
         @Override
         public Point next() {
-            // TODO Auto-generated method stub
             return iterator.next();
         }
 

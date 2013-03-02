@@ -1,6 +1,8 @@
-package com.maelstrom.astronomicon;
+package com.maelstrom.astronomicon.movements;
 
 import java.util.Vector;
+
+import com.maelstrom.astronomicon.Point;
 
 public class ComposeMove implements IMovement {
 
@@ -8,7 +10,7 @@ public class ComposeMove implements IMovement {
 
     int stepped_back;
 
-    ComposeMove(IMovement... transformations) {
+    public ComposeMove(IMovement... transformations) {
         for (IMovement t : transformations) {
             list.add(t);
         }
@@ -39,17 +41,6 @@ public class ComposeMove implements IMovement {
     public boolean nonzero() {
         return !(list.isEmpty() || list.size() <= stepped_back
                 && !list.firstElement().nonzero());
-    }
-
-    @Override
-    public Direction getSummaryRotation() {
-        // TODO Auto-generated method stub
-        Direction accum = Direction.UNCHANGED;
-        
-        for (IMovement movement : list) {
-            accum.add(movement.getSummaryRotation());
-        }
-        return accum;
     }
 
 }

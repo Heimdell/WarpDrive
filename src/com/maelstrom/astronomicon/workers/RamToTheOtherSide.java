@@ -1,22 +1,23 @@
-package com.maelstrom.astronomicon;
+package com.maelstrom.astronomicon.workers;
+
+import com.maelstrom.astronomicon.IBlock;
+import com.maelstrom.astronomicon.IWarpGate;
+import com.maelstrom.astronomicon.Point;
+import com.maelstrom.astronomicon.Ship;
+import com.maelstrom.astronomicon.Ship.MatterIterator;
+
 
 public class RamToTheOtherSide implements IGenerates<Boolean> {
 
     IWarpGate gate;
     
-    Ship ship;
-    
     Ship.MatterIterator cursor;
-    
-    IBlockClassifier prospector;
     
     boolean exitIsPossible;
     
-    public RamToTheOtherSide(IWarpGate gate, Ship ship, IBlockClassifier prospector) {
+    public RamToTheOtherSide(IWarpGate gate, Ship ship) {
         this.gate = gate;
-        this.ship = ship;
         this.cursor = ship.iterator();
-        this.prospector = prospector;
         this.exitIsPossible = true;
     }
 
@@ -27,11 +28,7 @@ public class RamToTheOtherSide implements IGenerates<Boolean> {
             
             IBlock block = gate.getBlock(point);
             
-            Kind kind = prospector.classify(block);
-            
-            //     VOID, BREAKABLE, SOLID, FORBIDDEN_SOURCE, FORBIDDEN_DESTINATION
-            
-            switch (kind) {
+            switch (block.getKind()) {
             case SOLID:
             case FORBIDDEN_DESTINATION:
                 markExitAsImpossible();
@@ -49,7 +46,7 @@ public class RamToTheOtherSide implements IGenerates<Boolean> {
     }
 
     @Override
-    public Boolean results() throws ForbiddenDestinationBlockException {
+    public Boolean results() {
         return exitIsPossible;
     }
     

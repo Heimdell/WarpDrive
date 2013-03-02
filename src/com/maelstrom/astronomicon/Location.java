@@ -2,6 +2,10 @@ package com.maelstrom.astronomicon;
 
 import java.util.Iterator;
 
+import com.maelstrom.astronomicon.movements.ComposeMove;
+import com.maelstrom.astronomicon.movements.IMovement;
+import com.maelstrom.astronomicon.movements.Shift;
+
 public class Location implements Iterable<Point> {
 
     Point from, to, center;
@@ -14,6 +18,10 @@ public class Location implements Iterable<Point> {
 
     public Location(Point from, Point center, Point to, IMovement transform) {
         init(from, center, to, transform);
+    }
+    
+    public Location route(IMovement transform) {
+        return new Location(from.copy(), center.copy(), to.copy()).aquire(this.transform).aquire(transform);
     }
 
     private void init(Point from, Point center, Point to, IMovement transform) {
@@ -45,8 +53,10 @@ public class Location implements Iterable<Point> {
         );
     }
 
-    public void aquire(IMovement move) {
+    public Location aquire(IMovement move) {
         transform = new ComposeMove(transform, move);
+        
+        return this;
     }
 
     public Point project(Point point) {
@@ -98,4 +108,11 @@ public class Location implements Iterable<Point> {
         return bottom() + " - " + top();
     }
 
+    public void stepback() {
+        transform.stepback();
+    }
+    
+    public boolean nonzero() {
+        return transform.nonzero();
+    }
 }

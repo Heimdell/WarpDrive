@@ -12,7 +12,10 @@ public interface IWarpGate {
     IBlock vacuum();
     
     Iterator<Point> iterator();
+
+    void stepback();
     
-    Direction getRotation();
+    boolean nonzero();
+    
     
 }

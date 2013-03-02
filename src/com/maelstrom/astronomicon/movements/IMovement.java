@@ -1,4 +1,6 @@
-package com.maelstrom.astronomicon;
+package com.maelstrom.astronomicon.movements;
+
+import com.maelstrom.astronomicon.Point;
 
 public interface IMovement {
 
@@ -7,7 +9,5 @@ public interface IMovement {
     public void stepback();
 
     public boolean nonzero();
-    
-    public Direction getSummaryRotation();
 
 }

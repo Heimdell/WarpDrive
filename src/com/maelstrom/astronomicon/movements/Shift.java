@@ -1,4 +1,6 @@
-package com.maelstrom.astronomicon;
+package com.maelstrom.astronomicon.movements;
+
+import com.maelstrom.astronomicon.Point;
 
 public class Shift implements IMovement {
 
@@ -48,12 +50,6 @@ public class Shift implements IMovement {
     @Override
     public boolean nonzero() {
         return current < nullifying;
-    }
-
-    @Override
-    public Direction getSummaryRotation() {
-        // TODO Auto-generated method stub
-        return Direction.UNCHANGED;
     }
 
 }
