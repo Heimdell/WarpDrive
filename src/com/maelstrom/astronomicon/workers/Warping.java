@@ -1,10 +1,13 @@
 package com.maelstrom.astronomicon.workers;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.maelstrom.astronomicon.IUniverse;
 import com.maelstrom.astronomicon.IWarpGate;
 import com.maelstrom.astronomicon.Location;
 import com.maelstrom.astronomicon.Ship;
 import com.maelstrom.astronomicon.StateMachine;
+import com.maelstrom.autowiring.ClassLoader;
 
 
 
@@ -46,18 +49,18 @@ public class Warping implements IGenerates<Void> {
                 switch (state) {
                 case INITIAL:
                     // event always is SCAN
-                    currentWorker = warpIn = new ProjectToWarp(income);                    
+                    currentWorker = warpIn = createWarpProjector(income);                    
                     break;
                     
                 case SCANNING:
                     if (event == Action.FIT)
-                        currentWorker = warpThrough = new RamToTheOtherSideWithStepback(outcome, ship);
+                        currentWorker = warpThrough = createWarpFitter(outcome, ship);
                     // do nothing in FAIL_SCANNING
                     break;
                 
                 case FITTING:
                     if (event == Action.RELEASE)
-                        currentWorker = transgress = new TransgressThroughWarp(ship, income, outcome);
+                        currentWorker = transgress = createWarpTransgressor(ship, income, outcome);
                     // do nothing in FAIL_FITTING
                     break;
                 
@@ -113,6 +116,7 @@ public class Warping implements IGenerates<Void> {
     IGenerates<Boolean> warpThrough;
     IGenerates<Void>    transgress;
     
+    @SuppressWarnings("rawtypes")
     IGenerates currentWorker;
     
     Ship ship;
@@ -126,6 +130,76 @@ public class Warping implements IGenerates<Void> {
         this.outcome  = universe.establishGate(to);
     }
     
+    @SuppressWarnings("unchecked")
+    protected IGenerates<Void> createWarpTransgressor(
+            Ship ship,
+            IWarpGate income,
+            IWarpGate outcome
+    ) {
+        try {
+            return (IGenerates<Void>) new ClassLoader()
+                    .implementationOf("WarpTransgressor")
+                    .getConstructor(Ship.class, IWarpGate.class, IWarpGate.class)
+                    .newInstance(ship, income, outcome)
+                    ;
+        }
+        catch (InstantiationException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException
+                | NoSuchMethodException
+                | SecurityException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected IGenerates<Boolean> createWarpFitter(IWarpGate outcome,
+            Ship ship) {
+        try {
+            return (IGenerates<Boolean>) new ClassLoader()
+                    .implementationOf("WarpFitter")
+                    .getConstructor(IWarpGate.class, Ship.class)
+                    .newInstance(outcome, ship)
+                    ;
+        }
+        catch (InstantiationException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException
+                | NoSuchMethodException
+                | SecurityException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected IGenerates<Ship> createWarpProjector(IWarpGate income) {
+        try {
+            return (IGenerates<Ship>) new ClassLoader()
+                    .implementationOf("WarpProjector")
+                    .getConstructor(IWarpGate.class)
+                    .newInstance(income)
+                    ;
+        }
+        catch (InstantiationException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException
+                | NoSuchMethodException
+                | SecurityException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
     @Override
     public void process(int max_count) {
         assert hasWork();

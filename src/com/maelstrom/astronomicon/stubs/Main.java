@@ -10,23 +10,23 @@ public class Main {
         
         String[][] was = {
             {
-                " BBBBBC ",
-                "     B  ",
-                "     B  ",
-                "     B  ",
-                "     B  ",
+                "    BBBBBC ",
+                "        B  ",
+                "        B  ",
+                "        B  ",
+                "        B  ",
             }, {
-                " BBBBB  ",
-                " CCC B  ",
-                " C B B  ",
-                " CCC B  ",
-                " ### B  ",
+                "    BBBBB  ",
+                " CCC    B  ",
+                " C B    B  ",
+                " CCC    B  ",
+                " ###    B  ",
             }, {
-                "        ",
-                " CCC    ",
-                "  CB    ",
-                " CCC    ",
-                " ###    ",
+                "           ",
+                " CCC       ",
+                "  CB       ",
+                " CCC       ",
+                " ###       ",
             }
         };
         
@@ -63,8 +63,20 @@ public class Main {
         Universe universe = new Universe(map, was);
         Universe arcadia  = new Universe(map, mustBecome);
         
-        Location source      = new Location(new Point(1,1,1), new Point(2,2,2), new Point(3,3,2));
-        Location destination = source.route(new ComposeMove(new Rotate(Direction.LEFT), new Shift(3, -1, -1)));
+        Location source =
+            new Location(
+                new Point(1,1,1),
+                new Point(2,2,2),
+                new Point(3,3,2)
+            );
+
+        Location destination =
+             source.route(
+                 new ComposeMove(
+                     new Rotate(Direction.RIGHT),
+                     new Shift(7, -1, -1)
+                 )
+             );
         
         Warping warping = new Warping(source, destination, universe);
         

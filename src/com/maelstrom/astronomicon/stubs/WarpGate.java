@@ -27,8 +27,6 @@ public class WarpGate implements IWarpGate {
     public void putBlock(IBlock block, Point point) {
         assert block instanceof Block;
         
-        System.out.println("putting at " + point + "" + block.getKind());
-        
         universe.putBlock((Block) block, location.project(point));
     }
 

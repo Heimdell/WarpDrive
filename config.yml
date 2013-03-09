@@ -1,0 +1,13 @@
+project prefix: com.maelstrom.astronomicon
+class:
+    IBlock:
+        default: stubs.Block
+
+    WarpTransgressor:
+        default: workers.TransgressThroughWarp
+
+    WarpFitter:
+        default: workers.RamToTheOtherSideWithStepback
+
+    WarpProjector:
+        default: workers.ProjectToWarp

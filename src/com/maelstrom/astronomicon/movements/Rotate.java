@@ -50,5 +50,9 @@ public class Rotate implements IMovement {
     public boolean nonzero() {
         return roll != Direction.UNCHANGED;
     }
+    
+    public String toString() {
+        return roll.toString();
+    }
 
 }

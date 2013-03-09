@@ -7,7 +7,7 @@ public abstract class StateMachine<State, Event> {
 
     public abstract void    performSideEffect(State state, Event event);
     public abstract boolean customValidation (State state, Event event);
-    public abstract void    initTransitions();
+    public abstract void    initTransitions  ();
     public abstract boolean onlyOneTransitionAvailable();
 
     HashMap<Event, HashMap<State, State>> transitions;
@@ -24,9 +24,12 @@ public abstract class StateMachine<State, Event> {
         initTransitions();
     }
     
+    @SuppressWarnings("unchecked")
     public State[] array(State... states) { return states; }
     
     public void selfDecide() {
+        assert self_driven;
+        
         HashSet<Event> available = new HashSet<Event>();
         
         for (Event event : transitions.keySet()) {
@@ -37,10 +40,11 @@ public abstract class StateMachine<State, Event> {
         assert available.size() <= 1;
         
         for (Event single : available) {
-            perform(single);
+            tryPerform(single);
         }
     }
     
+    @SuppressWarnings("unchecked")
     public void when(State fromState, Event event, State toState) {
         when(array(fromState), event, toState);
     }
@@ -53,6 +57,8 @@ public abstract class StateMachine<State, Event> {
             transition = new HashMap<State, State>(); 
         
         for (State fromState : fromStates) {
+            assert transition.get(fromState) == null;
+            
             transition.put(fromState, toState);
         }
         
@@ -68,14 +74,15 @@ public abstract class StateMachine<State, Event> {
     }
     
     public void perform(Event event) {
-        assert this.can(event);
+        assert this.can(event) : "This cannot make event!";
         
         HashMap<State, State> transition = transitions.get(event);
-
+        
         // capturing state before we move
         performSideEffect(state, event);
         
         state = transition.get(state);
+
     }
     
     public boolean tryPerform(Event event) {

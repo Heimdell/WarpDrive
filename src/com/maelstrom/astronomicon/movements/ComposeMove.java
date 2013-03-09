@@ -1,19 +1,19 @@
 package com.maelstrom.astronomicon.movements;
 
-import java.util.Vector;
+import java.util.Stack;
 
 import com.maelstrom.astronomicon.Point;
 
 public class ComposeMove implements IMovement {
 
-    Vector<IMovement> list = new Vector<IMovement>();
-
-    int stepped_back;
+    Stack<IMovement> list = new Stack<IMovement>();
 
     public ComposeMove(IMovement... transformations) {
         for (IMovement t : transformations) {
-            list.add(t);
+            list.push(t);
         }
+        
+        normalize(list);
     }
 
     @Override
@@ -27,20 +27,26 @@ public class ComposeMove implements IMovement {
 
     @Override
     public void stepback() {
-        assert nonzero();
+        assert nonzero() : "ZERO!";
         
-        IMovement last = list.elementAt(list.size() - 1 - stepped_back);
-
-        if (last.nonzero())
-            last.stepback();
-        else
-            stepped_back++;
+        list.peek().stepback();
+        
+        normalize(list);
     }
 
+    void normalize(Stack<IMovement> list) {
+        while (!list.empty() && !list.peek().nonzero()) {
+            list.pop();
+        }
+    }
+    
     @Override
     public boolean nonzero() {
-        return !(list.isEmpty() || list.size() <= stepped_back
-                && !list.firstElement().nonzero());
+        return !list.isEmpty();
+    }
+    
+    public String toString() {
+        return list.toString();
     }
 
 }

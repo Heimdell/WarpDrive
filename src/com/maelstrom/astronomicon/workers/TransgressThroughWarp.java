@@ -4,8 +4,6 @@ import com.maelstrom.astronomicon.IBlock;
 import com.maelstrom.astronomicon.IWarpGate;
 import com.maelstrom.astronomicon.Point;
 import com.maelstrom.astronomicon.Ship;
-import com.maelstrom.astronomicon.Ship.MatterIterator;
-
 
 public class TransgressThroughWarp implements IGenerates<Void> {
     
@@ -13,7 +11,7 @@ public class TransgressThroughWarp implements IGenerates<Void> {
     
     Ship.MatterIterator brush;
     
-        IBlock vacuum;
+    IBlock vacuum;
 
     IWarpGate income, outcome;
 

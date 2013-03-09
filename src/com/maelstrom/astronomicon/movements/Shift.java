@@ -52,4 +52,7 @@ public class Shift implements IMovement {
         return current < nullifying;
     }
 
+    public String toString() {
+        return corrected.toString();
+    }
 }

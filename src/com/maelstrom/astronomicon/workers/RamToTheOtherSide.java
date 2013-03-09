@@ -4,8 +4,6 @@ import com.maelstrom.astronomicon.IBlock;
 import com.maelstrom.astronomicon.IWarpGate;
 import com.maelstrom.astronomicon.Point;
 import com.maelstrom.astronomicon.Ship;
-import com.maelstrom.astronomicon.Ship.MatterIterator;
-
 
 public class RamToTheOtherSide implements IGenerates<Boolean> {
 
@@ -31,6 +29,7 @@ public class RamToTheOtherSide implements IGenerates<Boolean> {
             switch (block.getKind()) {
             case SOLID:
             case FORBIDDEN_DESTINATION:
+            case FORBIDDEN_SOURCE:
                 markExitAsImpossible();
                 break;
 

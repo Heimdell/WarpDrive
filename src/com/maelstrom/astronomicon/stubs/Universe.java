@@ -14,7 +14,7 @@ public class Universe implements IUniverse {
     HashMap<Kind, Character> decompile = new HashMap<Kind, Character>();
     
     public Block vacuum() {
-        return new Block(Kind.FORBIDDEN_SOURCE);
+        return new Block(Kind.VOID);
     }
 
     public Block getBlock(Point point) {
