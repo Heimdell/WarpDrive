@@ -6,8 +6,6 @@ import com.maelstrom.astronomicon.StateMachine;
 
 public class RamToTheOtherSideWithStepback implements IGenerates<Boolean> {
     
-    // TODO: Understand, how this shit should work
-    
     enum State {
         INITIAL, LOOKING_UP, FOUND, STEPBACKING, STEPBACKS_EXCEEDED
     }
